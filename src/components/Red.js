@@ -7,7 +7,7 @@ const RedBlock = styled.div`
 `;
 
 const Red = () => {
-  return <RedBlock></RedBlock>;
+  return <RedBlock>Red</RedBlock>;
 };
 
 export default Red;

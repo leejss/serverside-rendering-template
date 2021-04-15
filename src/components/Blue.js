@@ -7,7 +7,7 @@ const BlueBlock = styled.div`
 `;
 
 const Blue = () => {
-  return <BlueBlock></BlueBlock>;
+  return <BlueBlock>Blue</BlueBlock>;
 };
 
 export default Blue;
