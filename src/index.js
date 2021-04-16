@@ -12,6 +12,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 
 const store = createStore(
   rootReducer,
+  window.__PRELOADED_STATE__,
   composeWithDevTools(applyMiddleware(thunk))
 );
 

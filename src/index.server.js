@@ -20,7 +20,7 @@ const chunks = Object.keys(manifest.files)
   .map((key) => `<script src="${manifest.files[key]}"></script>`)
   .join();
 
-function createPage(root) {
+function createPage(root, stateScript) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -38,6 +38,7 @@ function createPage(root) {
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root">${root}</div>
+        ${stateScript}
         <script src="${manifest.files["runtime-main.js"]}"></script>
         ${chunks}
         <script src="${manifest.files["main.js"]}"></script>
@@ -76,7 +77,14 @@ const serverRender = async (req, res, next) => {
   preloadContext.done = true;
 
   const root = ReactDOMServer.renderToString(jsx);
-  res.send(createPage(root));
+
+  // state script 주입
+  // store를 string으로 변환
+  const stateString = JSON.stringify(store.getState()).replace(/</g, "\\u003c");
+  // script 생성
+  const stateScript = `<script>__PRELOADED_STATE__=${stateString}</script>`;
+
+  res.send(createPage(root, stateScript));
 };
 
 const serve = express.static(path.resolve("./build"), {
