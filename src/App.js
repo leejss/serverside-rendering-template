@@ -4,6 +4,7 @@ import Menu from "./components/Menu";
 import BluePage from "./pages/BluePage";
 import RedPage from "./pages/RedPage";
 import "./App.css";
+import UsersPage from "./pages/UsersPage";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <hr />
       <Route path="/red" component={RedPage} />
       <Route path="/blue" component={BluePage} />
+      <Route path="/users" component={UsersPage} />
     </div>
   );
 };

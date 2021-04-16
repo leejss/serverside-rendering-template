@@ -5,6 +5,11 @@ import { StaticRouter } from "react-router-dom";
 import App from "./App";
 import path from "path";
 import fs from "fs";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import rootReducer from "./modules";
+import PreloadContext from "./lib/PreloadContext";
 
 const manifest = JSON.parse(
   fs.readFileSync(path.resolve("./build/asset-manifest.json"), "utf-8")
@@ -43,13 +48,32 @@ function createPage(root) {
 
 const app = express();
 
-const serverRender = (req, res, next) => {
+const serverRender = async (req, res, next) => {
   const context = {};
+  const store = createStore(rootReducer, applyMiddleware(thunk));
+
+  const preloadContext = {
+    done: false,
+    promises: [],
+  };
   const jsx = (
-    <StaticRouter location={req.url} context={context}>
-      <App />
-    </StaticRouter>
+    <PreloadContext.Provider value={preloadContext}>
+      <Provider store={store}>
+        <StaticRouter location={req.url} context={context}>
+          <App />
+        </StaticRouter>
+      </Provider>
+    </PreloadContext.Provider>
   );
+
+  ReactDOMServer.renderToStaticMarkup(jsx);
+  try {
+    await Promise.all(preloadContext.promises);
+  } catch (err) {
+    return res.status(500);
+  }
+
+  preloadContext.done = true;
 
   const root = ReactDOMServer.renderToString(jsx);
   res.send(createPage(root));

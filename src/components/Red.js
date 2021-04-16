@@ -2,12 +2,24 @@ import React from "react";
 import styled from "styled-components";
 
 const RedBlock = styled.div`
-  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
 `;
 
+const RedBox = styled.div`
+  height: 300px;
+  width: 300px;
+  background-color: red;
+`;
+
 const Red = () => {
-  return <RedBlock>Red</RedBlock>;
+  return (
+    <RedBlock>
+      <RedBox />
+    </RedBlock>
+  );
 };
 
 export default Red;

@@ -3,12 +3,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const MenuBlock = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
   background-color: #000;
   width: 100%;
-  height: 150px;
 `;
 
 const SyledLink = styled(Link)`
@@ -34,6 +30,9 @@ const Menu = () => {
         </StyledItem>
         <StyledItem>
           <SyledLink to="/blue">Blue</SyledLink>
+        </StyledItem>
+        <StyledItem>
+          <SyledLink to="/users">Users</SyledLink>
         </StyledItem>
       </ul>
     </MenuBlock>
